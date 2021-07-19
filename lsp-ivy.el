@@ -220,5 +220,19 @@ When called with prefix ARG the default selection will be symbol at point."
                         (lsp-workspace-folders-remove folder)
                         (ivy--kill-current-candidate)))))
 
+;;;###autoload
+(defun lsp-ivy-code-actions ()
+  "`ivy' to select lsp code actions at point."
+  (interactive)
+  (let ((actions (lsp-code-actions-at-point)))
+	(cond
+	 ((seq-empty-p actions) (signal 'lsp-no-code-actions nil))
+	 ((and (eq (seq-length actions) 1) lsp-auto-execute-action)
+	  (lsp-execute-code-action (lsp-seq-first actions)))
+	 (t (ivy-read "Code actions: " (mapcar (lambda (ac) (cons (ht-get ac "title") ac)) actions)
+		      :require-match t
+		      :action (lambda (action)
+				(lsp-execute-code-action (cdr action))))))))
+
 (provide 'lsp-ivy)
 ;;; lsp-ivy.el ends here
