@@ -234,5 +234,21 @@ When called with prefix ARG the default selection will be symbol at point."
 		      :action (lambda (action)
 				(lsp-execute-code-action (cdr action))))))))
 
+(defun lsp-ivy--format-diag (file diag)
+  "Format lsp DIAG entry in FILE for ivy display."
+  (let ((message (ht-get diag "message")) (line (ht-get (ht-get (ht-get diag "range") "start") "line")))
+    (concat (if-let ((wks (lsp-workspace-root file))) (f-relative file wks) file) ":" (number-to-string line) " " message)))
+
+;;;###autoload
+(defun lsp-ivy-diagnostics (arg)
+  "`ivy' to browse lsp diagnostics.  Use prefix ARG to see diagnostics from all workspaces."
+  (interactive "P")
+  (let ((diag (apply '-concat (ht-map (lambda (file diags) (mapcar (lambda (val) (list (lsp-ivy--format-diag file val) file val)) diags)) (if arg (lsp-diagnostics) (lsp-diagnostics (lsp-workspace-root)))))))
+    (ivy-read "LSP diagnostics: " diag
+	      :require-match t
+	      :action (lambda (input) (let ((file (nth 1 input)) (diag (nth 2 input)))
+					(find-file file)
+					(goto-char (lsp--position-to-point (ht-get (ht-get diag "range") "start"))))))))
+
 (provide 'lsp-ivy)
 ;;; lsp-ivy.el ends here
