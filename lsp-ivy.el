@@ -19,7 +19,7 @@
 ;;          Oliver Rausch
 ;; Keywords: languages, debug
 ;; URL: https://github.com/emacs-lsp/lsp-ivy
-;; Package-Requires: ((emacs "25.1") (dash "2.14.1") (lsp-mode "6.2.1") (ivy "0.13.0"))
+;; Package-Requires: ((emacs "25.1") (dash "2.14.1") (lsp-mode "6.2.1") (ivy "0.13.0") (ht "2.3")
 ;; Version: 0.4
 ;;
 
@@ -33,6 +33,7 @@
 
 (require 'ivy)
 (require 'dash)
+(require 'ht)
 
 (require 'lsp-protocol)
 (require 'lsp-mode)
