@@ -12,4 +12,6 @@ This package provides an interactive ~ivy~ interface to the workspace symbol fun
 * Commands
   - ~lsp-ivy-workspace-symbol~ - workspace symbols for the current workspace
   - ~lsp-ivy-global-workspace-symbol~ - workspace symbols from all of the active workspaces,
-  - ~lsp-ivy-code-actions~ - code actions at point.
+  - ~lsp-ivy-code-actions~ - code actions at point,
+  - ~lsp-ivy-diagnostics~ - lsp diagnostics in current workspace. Use
+    prefix argument for diagnostics in all worskapces.
